@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -27,7 +28,17 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                tv.setText(response.toString());
+                try {
+                    int userId = response.getInt("userId");
+                    int id = response.getInt("id");
+                    String title = response.getString("title");
+                    boolean completed = response.getBoolean("completed");
+
+                    tv.setText(userId+"\n"+id+"\n"+title+"\n"+completed);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {
